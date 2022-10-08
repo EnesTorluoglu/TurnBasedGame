@@ -3,6 +3,7 @@
 
 #include "MapGoable.h"
 #include "Components/BoxComponent.h"
+#include "MapGroups.h"
 
 // Sets default values
 AMapGoable::AMapGoable()
@@ -16,6 +17,7 @@ AMapGoable::AMapGoable()
 
 	// Creates the box component
 	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger Box"));
+	TriggerBox->SetupAttachment(RootSceneComponent);
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &AMapGoable::OnOverlapBegin);
 
 }
@@ -36,6 +38,19 @@ void AMapGoable::Tick(float DeltaTime)
 
 void AMapGoable::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("heleleyle"));
+	
+	AMapGroups* mapGroup = Cast<AMapGroups>(OtherActor);
+	
+	if (mapGroup != nullptr)
+	{
+		if (mapGroup->GetIsGoingToGoable() && mapGroup->GetNameOfGoable() == this->goableName)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ifififfif"));
+			groupBeginOverlap(mapGroup);
 
+		}
 
+	}
+	
 }
